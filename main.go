@@ -10,14 +10,18 @@ import (
 )
 
 func main() {
-	r := mux.NewRouter()
+	c := cors.New(cors.Options{
+		AllowedOrigins: []string{"https://gizug0-vd.myshopify.com/","https://peterjacksons.com"},
+		AllowCredentials: true,
+		Debug: true,
+	})
 
+	r := mux.NewRouter()
 	r.HandleFunc("/ping", PingHandler).Methods(http.MethodGet)
 	r.HandleFunc("/ping", PostPingHandler).Methods(http.MethodPost)
-	handler := cors.AllowAll().Handler(r)
 
 	log.Printf("serving requests on 0.0.0.0:5000")
-	http.ListenAndServe("0.0.0.0:5000", handler)
+	http.ListenAndServe("0.0.0.0:5000", c.Handler(r))
 }
 
 func PingHandler(w http.ResponseWriter, r *http.Request) {
