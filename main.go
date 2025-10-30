@@ -11,7 +11,7 @@ import (
 
 func main() {
 	c := cors.New(cors.Options{
-		AllowedOrigins: []string{"https://gizug0-vd.myshopify.com/","https://peterjacksons.com"},
+		AllowedOrigins: []string{"https://gizug0-vd.myshopify.com","https://peterjacksons.com"},
 		AllowCredentials: true,
 		Debug: true,
 	})
