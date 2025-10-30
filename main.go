@@ -6,6 +6,7 @@ import (
 	"net/http"
 
 	"github.com/gorilla/mux"
+	"github.com/rs/cors"
 )
 
 func main() {
@@ -13,9 +14,10 @@ func main() {
 
 	r.HandleFunc("/ping", PingHandler).Methods(http.MethodGet)
 	r.HandleFunc("/ping", PostPingHandler).Methods(http.MethodPost)
-	log.Printf("serving requests on 0.0.0.0:5000")
+	handler := cors.AllowAll().Handler(r)
 
-	http.ListenAndServe("0.0.0.0:5000", r)
+	log.Printf("serving requests on 0.0.0.0:5000")
+	http.ListenAndServe("0.0.0.0:5000", handler)
 }
 
 func PingHandler(w http.ResponseWriter, r *http.Request) {
