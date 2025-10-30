@@ -17,11 +17,19 @@ func main() {
 	})
 
 	r := mux.NewRouter()
+	r.HandleFunc("*", CatchAllHandler)
 	r.HandleFunc("/ping", PingHandler).Methods(http.MethodGet)
 	r.HandleFunc("/ping", PostPingHandler).Methods(http.MethodPost)
 
 	log.Printf("serving requests on 0.0.0.0:5000")
 	http.ListenAndServe("0.0.0.0:5000", c.Handler(r))
+}
+
+func CatchAllHandler(w http.ResponseWriter, r *http.Request) {
+	log.Printf("ping all")
+	w.WriteHeader(http.StatusOK)
+	w.Header().Set("Content-Type", "application/json; utf-8")
+	w.Write([]byte("pong all"))
 }
 
 func PingHandler(w http.ResponseWriter, r *http.Request) {
